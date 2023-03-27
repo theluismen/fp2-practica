@@ -12,5 +12,5 @@ a la sopa de lletres.
 
 ## Membres i Perfils del Grup
 * Luis Manuel Ocampo - **Desenvolupador principal**
-* Pablo - **Direcció del projecte**
-* Adrià - **Documentació**
+* Pablo Muñoz - **Direcció del projecte**
+* Adrià Montagut - **Documentació**
