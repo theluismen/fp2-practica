@@ -1,0 +1,9 @@
+- missatge de benvinguda
+- obrir fitxer i carregar paraules
+- mostrar paraules (i ordenar-les)
+- pedir mida de sopa de lletres (10-40)
+- generar sopa de lletres amb les paraules
+- mostrar sopa de lletres i paraules restants
+- torn del jugador 
+- comprobar paraula trobada i eliminar-la de la llista
+- missatge de victoria/rendició
