@@ -103,3 +103,8 @@ void mostra_sopa (sopa_t s)
     }
 
 }
+
+void missatge_benvinguda();
+{
+    printf("******************************************************\nUs donem la benvinguda al joc de la sopa de lletres!\nAutors: Pablo Muñoz, Luis Manuel Ocampo, Adrian Montagut\n******************************************************");
+}
