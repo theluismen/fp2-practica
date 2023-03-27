@@ -1,51 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdbool.h>
-#include <string.h>
 
-#define MAX_LLETRES 8
-#define MAX_PARAULES 10
-
-
-/* Definicio del tipus per a desar les dades de la sopa de lletres */
-/* Es una proposta que podeu canviar, ampliar, etc. */
-typedef struct
-{
-    char ll[MAX_LLETRES + 1];   // Lletres de la paraula (comptem centinella)
-    bool enc;   // La paraula s'ha encertat
-} paraula_t;
-
-typedef struct
-{
-    int dim;        // Nombre de files = nombre de columnes
-    char *lletres;  // Taula amb les lletres
-    bool *encertades;   // Les lletres son d'una paraula que s'ha encertat
-    paraula_t par[MAX_PARAULES];    // Les paraules
-    int n_par;  // Nombre de paraules
-    int n_encerts;    // Nombre de paraules encertades
-} sopa_t;
-
-/* Mostra una lletra segons si pertany a encert o no. No caldria modificar */
-void mostra_lletra(char ll, bool enc)
-{
-    if (enc)
-    {
-        printf("\033[0;42m");   // Color verd de fons
-        printf(" %c", ll);
-        printf("\033[0m");  // Tornem al color per defecte
-    }
-    else
-    {
-        printf(" %c", ll);
-    }
-
-
-}
-
+#include "headers.h"
 
 /* Mostra la sopa de lletres pel terminal */
 /* En principi, NO HAURIEU DE MODIFICAR AQUEST CODI */
-void mostra_sopa (sopa_t s)
+void mostrar_sopa (struct Sopa_t s)
 {
     // Mostrem els numeros de columna
     printf("\033[0;31m");   // Color
@@ -102,9 +63,4 @@ void mostra_sopa (sopa_t s)
             printf("%s\n", s.par[i].ll);
     }
 
-}
-
-void missatge_benvinguda()
-{
-    printf("******************************************************\nUs donem la benvinguda al joc de la sopa de lletres!\nAutors: Pablo Munoz, Luis Manuel Ocampo, Adria Montagut\n******************************************************");
 }
