@@ -1,4 +1,4 @@
-# Fonaments de Programació - Practica Sopa de Lletres
+# Fonaments de Programació II - Practica Sopa de Lletres
 
 ## Objectiu
 L'objectiu és fer un programa que us permeti crear sopes de lletres i jugar-hi. Així doncs, a
