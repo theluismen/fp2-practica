@@ -3,3 +3,5 @@
 
 # Ignorar todos los ejecutables
 *.exe
+
+main-def.c
