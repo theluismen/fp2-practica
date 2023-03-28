@@ -2,10 +2,23 @@
 
 #include "headers.h"
 
-int main () {
+int main ( int argc, char * argv[] ) {
+    FILE * arxiu = NULL;
+    struct Sopa_t sopa;
 
     /* Mostrar Missatge de Benvinguda XD*/
-    missatge_benvinguda();
+    //missatge_benvinguda();
+
+    if ( argv[1] == NULL ) {
+        /* Missatge d'error si no s'indica el fitxer*/
+        printf("ERROR. S'ha d'especificar l'arxiu que conté les paraules.\nSortint de programa");
+    } else {
+        /* Aqui es comencen a fer coses */
+        arxiu = fopen( argv[1], "r");
+        carregar_paraules( &sopa, arxiu );
+        fclose(arxiu);
+        mostrar_paraules( &sopa );
+    }
 
     return 0;
 }

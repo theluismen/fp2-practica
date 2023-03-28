@@ -5,17 +5,22 @@ CC		:= gcc
 CCFLAGS	:= -Wall -gdwarf-3 -O0 -I./inc
 TARGET	:= demo.exe
 OBJS	:= ./obj/main.o ./obj/funciones.o ./obj/funciones_propias.o
+TEST_FILE := ./files/paraules.txt
 #-------------------------------------------------------------------------------
 # CREAR LOS ARCHIVOS NECESARIOS
 #-------------------------------------------------------------------------------
-$(TARGET) : ./obj/main.o ./obj/funciones.o ./obj/funciones_propias.o
+$(TARGET) : $(OBJS)
 	$(CC) $(CCFLAGS) $(OBJS) -o $(TARGET)
 
 ./obj/%.o : ./src/%.c
 	$(CC) $(CCFLAGS) -c $< -o $@
-
 #-------------------------------------------------------------------------------
 # CLEAN
 #-------------------------------------------------------------------------------
 clean :
 	@rm -fv $(TARGET) ./obj/*.o
+#-------------------------------------------------------------------------------
+# TEST Y DEBUGS
+#-------------------------------------------------------------------------------
+test : $(TARGET) $(TEST_FILE)
+	@./$(TARGET) $(TEST_FILE)

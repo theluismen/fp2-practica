@@ -13,7 +13,7 @@ a la sopa de lletres.
 ## Tasques a fer
 ### Funcions
 - [x] Missatge de benvinguda
-- [ ] Obrir Fitxer i Carregar Paraules
+- [x] Obrir Fitxer i Carregar Paraules
 - [x] Mostrar Paraules
 - [ ] Ordenar Paraules
 - [ ] Generar sopa de lletres amb les paraules
