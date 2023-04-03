@@ -1,4 +1,5 @@
 #include <stdbool.h>
+#include <stdio.h>
 
 #define MAX_LLETRES 8
 #define MAX_PARAULES 10
@@ -24,4 +25,8 @@ extern void missatge_benvinguda( void );
 
 extern void carregar_paraules ( struct Sopa_t * sopa, FILE * arxiu );
 
-extern void mostrar_paraules( struct Sopa_t * sopa );
+extern void mostrar_paraules ( struct Sopa_t * sopa );
+
+extern bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp);
+
+extern void ordenar_paraules ( struct Sopa_t * sopa );

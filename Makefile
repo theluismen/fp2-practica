@@ -4,7 +4,8 @@
 CC		:= gcc
 CCFLAGS	:= -Wall -gdwarf-3 -O0 -I./inc
 TARGET	:= demo.exe
-OBJS	:= ./obj/main.o ./obj/funciones.o ./obj/funciones_propias.o
+OBJS	:= ./obj/main.o ./obj/funciones.o ./obj/funciones_propias.o \
+			./obj/ordenar.o
 TEST_FILE := ./files/paraules.txt
 #-------------------------------------------------------------------------------
 # CREAR LOS ARCHIVOS NECESARIOS

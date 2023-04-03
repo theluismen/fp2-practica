@@ -17,7 +17,17 @@ int main ( int argc, char * argv[] ) {
         arxiu = fopen( argv[1], "r");
         carregar_paraules( &sopa, arxiu );
         fclose(arxiu);
+        ordenar_paraules( &sopa );
         mostrar_paraules( &sopa );
+
+        /* Pedir mida de la sopa */
+        do {
+            printf("Mida de la sopa[10..40]:");
+            scanf("%d", &sopa.dim);
+        } while ( sopa.dim < 10 || sopa.dim > 40 );
+
+        /* Generar Sopa */
+
     }
 
     return 0;

@@ -15,7 +15,7 @@ a la sopa de lletres.
 - [x] Missatge de benvinguda
 - [x] Obrir Fitxer i Carregar Paraules
 - [x] Mostrar Paraules
-- [ ] Ordenar Paraules
+- [x] Ordenar Paraules
 - [ ] Generar sopa de lletres amb les paraules
 ### Més coses
 - [ ] Pedir mida de sopa de lletres (10-40)
