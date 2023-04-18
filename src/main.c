@@ -1,5 +1,4 @@
 #include <stdio.h>
-
 #include "headers.h"
 
 int main ( int argc, char * argv[] ) {
@@ -9,7 +8,7 @@ int main ( int argc, char * argv[] ) {
     /* Mostrar Missatge de Benvinguda XD*/
     //missatge_benvinguda();
 
-    if ( argv[1] == NULL ) {
+    if ( argv[1] == NULL || argc > 2) {
         /* Missatge d'error si no s'indica el fitxer*/
         printf("ERROR. S'ha d'especificar l'arxiu que conté les paraules.\nSortint de programa");
     } else {
@@ -17,7 +16,7 @@ int main ( int argc, char * argv[] ) {
         arxiu = fopen( argv[1], "r");
         carregar_paraules( &sopa, arxiu );
         fclose(arxiu);
-        ordenar_paraules( &sopa );
+        // ordenar_paraules( &sopa );
         mostrar_paraules( &sopa );
 
         /* Pedir mida de la sopa */
@@ -27,7 +26,8 @@ int main ( int argc, char * argv[] ) {
         } while ( sopa.dim < 10 || sopa.dim > 40 );
 
         /* Generar Sopa */
-
+		generar_sopa(&sopa);
+		mostrar_sopa(&sopa);
     }
 
     return 0;
