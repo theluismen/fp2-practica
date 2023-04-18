@@ -1,5 +1,8 @@
 #include <stdbool.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <time.h>
 
 #define MAX_LLETRES 8
 #define MAX_PARAULES 10
@@ -30,3 +33,7 @@ extern void mostrar_paraules ( struct Sopa_t * sopa );
 extern bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp);
 
 extern void ordenar_paraules ( struct Sopa_t * sopa );
+
+extern void generar_sopa (struct Sopa_t * sopa);
+
+extern void mostrar_sopa (struct Sopa_t * sopa);
