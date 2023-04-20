@@ -34,6 +34,6 @@ extern bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp);
 
 extern void ordenar_paraules ( struct Sopa_t * sopa );
 
-extern void generar_sopa (struct Sopa_t * sopa);
+extern void generar_sopa ( struct Sopa_t * sopa);
 
-extern void mostrar_sopa (struct Sopa_t * sopa);
+extern void mostrar_sopa ( struct Sopa_t * sopa);

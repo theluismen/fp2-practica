@@ -5,3 +5,6 @@
 *.exe
 
 main-def.c
+
+# Ignorar PDF de la practica
+FP_2_Practica_Sopa.pdf
