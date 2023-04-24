@@ -58,7 +58,7 @@ void mostrar_paraules ( struct Sopa_t * sopa ) {
 
 void generar_sopa ( struct Sopa_t * sopa )
 {
-	int aux, p_length;
+	int aux, p_long;
 	int x, y, d;	// x i y son coordenadas de la sopa, d es direccion
 	bool correcto;
 	srand(time(NULL));
@@ -75,7 +75,7 @@ void generar_sopa ( struct Sopa_t * sopa )
 
 	for (int i = 0; i < sopa->n_paraules; i++)
 	{
-		p_length = strlen(sopa->paraules[i].contingut);
+		p_long = strlen(sopa->paraules[i].contingut);   // Longitud de la palabra
 		do
 		{
 			x = rand() % sopa->dim;		// Genera x aleatoria
@@ -84,33 +84,33 @@ void generar_sopa ( struct Sopa_t * sopa )
 			// d = rand() % 2 + 2;				// Genera dirección aleatoria
 			if (d == 0) // HORIZONTAL PALANTE
 			{
-				correcto = (sopa->dim - x >= p_length);     // Comprueba si cabe la palabra dentro de los limites
+				correcto = (sopa->dim - x >= p_long);     // Comprueba si cabe la palabra dentro de los limites
 				aux = 0;
-				while(aux < p_length && correcto)
+				while(aux < p_long && correcto)
 				{
 					correcto = (sopa->lletres[ y *sopa->dim+(x+aux)] == '-');		// Comprueba que no haya ninguna palabra en medio (i*N + j)
 					aux++;
 				}
 			} else if (d == 1) { // VERTICAL PALANTE
-                correcto = (sopa->dim - y >= p_length);     // Comprueba si cabe la palabra dentro de los limites
+                correcto = (sopa->dim - y >= p_long);     // Comprueba si cabe la palabra dentro de los limites
                 aux = 0;
-                while(aux < p_length && correcto)
+                while(aux < p_long && correcto)
                 {
                     correcto = (sopa->lletres[(y+aux)*sopa->dim+x] == '-');		    // Comprueba que no haya ninguna palabra en medio (i*N + j)
                     aux++;
                 }
             }else if (d == 2) { // HORIZONTAL PATRAS
-                correcto = (x >= p_length);                 // Comprueba si cabe la palabra dentro de los limites
+                correcto = (x >= p_long);                 // Comprueba si cabe la palabra dentro de los limites
                 aux = 0;
-                while(aux < p_length && correcto)
+                while(aux < p_long && correcto)
 				{
 					correcto = (sopa->lletres[ y *sopa->dim+(x-aux)] == '-');		// Comprueba que no haya ninguna palabra en medio (i*N + j)
 					aux++;
 				}
             } else {// VERTICAL patras
-                correcto = (y >= p_length);                 // Comprueba si cabe la palabra dentro de los limites
+                correcto = (y >= p_long);                 // Comprueba si cabe la palabra dentro de los limites
                 aux = 0;
-                while(aux < p_length && correcto)
+                while(aux < p_long && correcto)
                 {
                     correcto = (sopa->lletres[(y-aux)*sopa->dim+x] == '-');		    // Comprueba que no haya ninguna palabra en medio (i*N + j)
                     aux++;
@@ -121,29 +121,29 @@ void generar_sopa ( struct Sopa_t * sopa )
 
         sopa->solucions[i].x = x;                   //
         sopa->solucions[i].y = y;                   // Guarda las coordenadas y la longitud de la palabra para comprobar las soluciones
-        sopa->solucions[i].length = p_length;       //
+        sopa->solucions[i].longitud = p_long;       //
 		if (d == 0)
 		{
-			for (int j = 0; j < p_length; j++)
+			for (int j = 0; j < p_long; j++)
 			{
 				sopa->lletres[y*sopa->dim + (x+j)] = sopa->paraules[i].contingut[j];    // Escribe la palabra
 			}
             sopa->solucions[i].dir = 1;             // Guarda la direccion
 		} else if (d == 1) {
-            for (int j = 0; j < p_length; j++)
+            for (int j = 0; j < p_long; j++)
             {
                 sopa->lletres[(y+j)*sopa->dim + x] = sopa->paraules[i].contingut[j];    // Escribe la palabra
             }
             sopa->solucions[i].dir = 2;             // Guarda la direccion
         } else if (d == 2) {
-            for (int j = 0; j < p_length; j++)
+            for (int j = 0; j < p_long; j++)
 			{
 				sopa->lletres[y*sopa->dim + (x-j)] = sopa->paraules[i].contingut[j];    // Escribe la palabra
 			}
             sopa->solucions[i].dir = -1;            // Guarda la direccion
         } else
 		{
-            for (int j = 0; j < p_length; j++)
+            for (int j = 0; j < p_long; j++)
             {
                 sopa->lletres[(y-j)*sopa->dim + x] = sopa->paraules[i].contingut[j];    // Escribe la palabra
             }
