@@ -1,7 +1,3 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-
 #include "headers.h"
 
 /* Mostra la sopa de lletres pel terminal */

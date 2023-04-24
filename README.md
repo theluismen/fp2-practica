@@ -16,7 +16,7 @@ a la sopa de lletres.
 - [x] Obrir Fitxer i Carregar Paraules
 - [x] Mostrar Paraules
 - [x] Ordenar Paraules
-- [ ] Generar sopa de lletres amb les paraules
+- [x] Generar sopa de lletres amb les paraules
 ### Més coses
 - [ ] Pedir mida de sopa de lletres (10-40)
 - [ ] Mostrar sopa de lletres i paraules restants

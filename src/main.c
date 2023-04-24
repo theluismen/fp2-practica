@@ -1,10 +1,7 @@
-#include <stdio.h>
-#include <stdbool.h>
 #include "headers.h"
 
 int main ( int argc, char * argv[] ) {
     struct Sopa_t sopa;
-    // bool arxiu_obert;
 
     /* Mostrar Missatge de Benvinguda XD*/
     //missatge_benvinguda();
@@ -18,18 +15,26 @@ int main ( int argc, char * argv[] ) {
         // arxiu_obert = carregar_paraules( &sopa, argv[1]) );
         if ( ! carregar_paraules( &sopa, argv[1]) ) {
             printf("ERROR. No s'ha pogut obrir el fitxer %s.", argv[1]);
+        } else {
+            /* Ordeno les paraules a sopa.paraules */
+            ordenar_paraules( &sopa );
+
+            /* Mostro les paraules a sopa.paraules */
+            mostrar_paraules( &sopa );
+
+            demanar_mida( &sopa );
+
+            /* Generar Sopa */
+            generar_sopa(&sopa);
+            mostrar_sopa(&sopa);
+
+            /* ESQUEMA BUCLE JUEGO
+            while (! sacabao(&sopa) ) {
+                pedir_jugada(&sopa)
+                mostrar_sopa(&sopa)
+            }
+            */
         }
-        /* Ordeno les paraules a sopa.paraules */
-        ordenar_paraules( &sopa );
-
-        /* Mostro les paraules a sopa.paraules */
-        mostrar_paraules( &sopa );
-
-        demanar_mida( &sopa );
-
-        /* Generar Sopa */
-		generar_sopa(&sopa);
-		mostrar_sopa(&sopa);
     }
 
     return 0;
