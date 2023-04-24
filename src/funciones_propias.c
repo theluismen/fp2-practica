@@ -59,17 +59,17 @@ void mostrar_paraules ( struct Sopa_t * sopa ) {
 void generar_sopa ( struct Sopa_t * sopa )
 {
 	int aux, p_length;
-	int x, y, d;	// x i y son coordenadas de la sopa, d es dirección
+	int x, y, d;	// x i y son coordenadas de la sopa, d es direccion
 	bool correcto;
 	srand(time(NULL));
 
     sopa->n_encerts  = 0;
     sopa->lletres    = malloc(sopa->dim * sopa->dim * sizeof(char));   // Espai per a les lletres
-    sopa->encertades = malloc(sopa->dim * sopa->dim * sizeof(char)); // Per saber si una lletra correspon a encert
+    sopa->encertades = malloc(sopa->dim * sopa->dim * sizeof(char));   // Per saber si una lletra correspon a encert
     for (int i = 0; i < sopa->dim * sopa->dim; i++)
     {
         sopa->encertades[i] = false;
-        // Inicialitzem la taula amb guions
+        // Inicializamos la tabla con guiones
         sopa->lletres[i] = '-';
     }
 
@@ -84,72 +84,78 @@ void generar_sopa ( struct Sopa_t * sopa )
 			// d = rand() % 2 + 2;				// Genera dirección aleatoria
 			if (d == 0) // HORIZONTAL PALANTE
 			{
-				correcto = (sopa->dim - x >= p_length);
+				correcto = (sopa->dim - x >= p_length);     // Comprueba si cabe la palabra dentro de los limites
 				aux = 0;
 				while(aux < p_length && correcto)
 				{
-					correcto = (sopa->lletres[ y *sopa->dim+(x+aux)] == '-');		// i*N + j
+					correcto = (sopa->lletres[ y *sopa->dim+(x+aux)] == '-');		// Comprueba que no haya ninguna palabra en medio (i*N + j)
 					aux++;
 				}
 			} else if (d == 1) { // VERTICAL PALANTE
-                correcto = (sopa->dim - y >= p_length);
+                correcto = (sopa->dim - y >= p_length);     // Comprueba si cabe la palabra dentro de los limites
                 aux = 0;
                 while(aux < p_length && correcto)
                 {
-                    correcto = (sopa->lletres[(y+aux)*sopa->dim+x] == '-');		// i*N + j
+                    correcto = (sopa->lletres[(y+aux)*sopa->dim+x] == '-');		    // Comprueba que no haya ninguna palabra en medio (i*N + j)
                     aux++;
                 }
             }else if (d == 2) { // HORIZONTAL PATRAS
-                correcto = (x >= p_length);
+                correcto = (x >= p_length);                 // Comprueba si cabe la palabra dentro de los limites
                 aux = 0;
                 while(aux < p_length && correcto)
 				{
-					correcto = (sopa->lletres[ y *sopa->dim+(x-aux)] == '-');		// i*N + j
+					correcto = (sopa->lletres[ y *sopa->dim+(x-aux)] == '-');		// Comprueba que no haya ninguna palabra en medio (i*N + j)
 					aux++;
 				}
             } else {// VERTICAL patras
-                correcto = (y >= p_length);
+                correcto = (y >= p_length);                 // Comprueba si cabe la palabra dentro de los limites
                 aux = 0;
                 while(aux < p_length && correcto)
                 {
-                    correcto = (sopa->lletres[(y-aux)*sopa->dim+x] == '-');		// i*N + j
+                    correcto = (sopa->lletres[(y-aux)*sopa->dim+x] == '-');		    // Comprueba que no haya ninguna palabra en medio (i*N + j)
                     aux++;
                 }
             }
 		}
 		while ( ! correcto);
 
+        sopa->solucions[i].x = x;                   //
+        sopa->solucions[i].y = y;                   // Guarda las coordenadas y la longitud de la palabra para comprobar las soluciones
+        sopa->solucions[i].length = p_length;       //
 		if (d == 0)
 		{
 			for (int j = 0; j < p_length; j++)
 			{
-				sopa->lletres[y*sopa->dim + (x+j)] = sopa->paraules[i].contingut[j];
+				sopa->lletres[y*sopa->dim + (x+j)] = sopa->paraules[i].contingut[j];    // Escribe la palabra
 			}
+            sopa->solucions[i].dir = 1;             // Guarda la direccion
 		} else if (d == 1) {
             for (int j = 0; j < p_length; j++)
             {
-                sopa->lletres[(y+j)*sopa->dim + x] = sopa->paraules[i].contingut[j];
+                sopa->lletres[(y+j)*sopa->dim + x] = sopa->paraules[i].contingut[j];    // Escribe la palabra
             }
+            sopa->solucions[i].dir = 2;             // Guarda la direccion
         } else if (d == 2) {
             for (int j = 0; j < p_length; j++)
 			{
-				sopa->lletres[y*sopa->dim + (x-j)] = sopa->paraules[i].contingut[j];
+				sopa->lletres[y*sopa->dim + (x-j)] = sopa->paraules[i].contingut[j];    // Escribe la palabra
 			}
+            sopa->solucions[i].dir = -1;            // Guarda la direccion
         } else
 		{
             for (int j = 0; j < p_length; j++)
             {
-                sopa->lletres[(y-j)*sopa->dim + x] = sopa->paraules[i].contingut[j];
+                sopa->lletres[(y-j)*sopa->dim + x] = sopa->paraules[i].contingut[j];    // Escribe la palabra
             }
+            sopa->solucions[i].dir = -2;            // Guarda la direccion
 		}
 	}
-    // for (int i = 0; i < sopa->dim * sopa->dim; i++)
-    // {
-    //     sopa->encertades[i] = false;
-    //     // Generem una lletra aleatoriament
-	// 	if (sopa->lletres[i] == '-')
-	// 	{
-	// 		sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
-	// 	}
-    // }
+    for (int i = 0; i < sopa->dim * sopa->dim; i++)
+    {
+        // Generamos una letra aleatoriamente en las casillas en las que no haya letras aun
+		if (sopa->lletres[i] == '-')
+        {
+			sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+        }
+    }
 }
