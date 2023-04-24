@@ -18,7 +18,7 @@ struct Coords_t{
     int x;          // Coordenada x de la palabra
     int y;          // Coordenada y de la palabra
     int dir;        // Dirección de la palabra (1 = horizontal palante, 2 = vertical palante, -1 = horizontal patras, -2 = vertical patras)
-    int length;     // longitud palabra
+    int longitud;     // longitud palabra
 };
 
 struct Sopa_t{
