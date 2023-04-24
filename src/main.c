@@ -1,34 +1,31 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "headers.h"
 
 int main ( int argc, char * argv[] ) {
-    FILE * arxiu = NULL;
     struct Sopa_t sopa;
+    // bool arxiu_obert;
 
     /* Mostrar Missatge de Benvinguda XD*/
     //missatge_benvinguda();
 
-    if ( argv[1] == NULL || argc > 2) {
+    if ( argv[1] == NULL || argc > 2 ) {
         /* Missatge d'error si no s'indica el fitxer*/
         printf("ERROR. S'ha d'especificar l'arxiu que conte les paraules.\nSortint de programa");
     } else {
         /* Aqui es comencen a fer coses */
         /* Obro l'arxiu, carrego les paralues a sopa.paraules, i tanco fitxer */
-        arxiu = fopen( argv[1], "r");
-        carregar_paraules( &sopa, arxiu );
-        fclose(arxiu);
-
+        // arxiu_obert = carregar_paraules( &sopa, argv[1]) );
+        if ( ! carregar_paraules( &sopa, argv[1]) ) {
+            printf("ERROR. No s'ha pogut obrir el fitxer %s.", argv[1]);
+        }
         /* Ordeno les paraules a sopa.paraules */
         ordenar_paraules( &sopa );
 
         /* Mostro les paraules a sopa.paraules */
         mostrar_paraules( &sopa );
 
-        /* Pedir mida de la sopa */
-        do {
-            printf("Mida de la sopa[10..40]:");
-            scanf("%d", &sopa.dim);
-        } while ( sopa.dim < 10 || sopa.dim > 40 );
+        demanar_mida( &sopa );
 
         /* Generar Sopa */
 		generar_sopa(&sopa);

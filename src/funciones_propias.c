@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdbool.h>
 #include "headers.h"
 
 /* Procediment que mostra missatge de benvinguda i els noms del membresdel grup*/
@@ -12,23 +13,38 @@ void missatge_benvinguda ( void ) {
 }
 
 /* Carrega les paraules d'un fitxer donat a l'estructura principal del programa: sopa*/
-void carregar_paraules ( struct Sopa_t * sopa, char ) {
+bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] ) {
+    bool ok = false;
     FILE * arxiu = NULL;
+    int i = 0;
     /* Un contador. De hecho se puede usar sopa->n_paraules como contador pero usando
     la variable i el codigo es mas claro
     */
-    int i = 0;
-    arxiu = fopen( argv[1], "r");
 
+    arxiu = fopen( nom_arxiu, "r");
+    if ( arxiu != NULL ) {
+        ok = true;
+        do {
+            /* Leer palabras con fscanf en vez de fgets pk cada linea siempre
+            es una palabra unica
+            */
+            fscanf(arxiu, "%s\n", sopa->paraules[i].contingut);
+            i++;
+        } while ( i < MAX_PARAULES && ! feof(arxiu) );
+        /* Indicar el numero de palabras leidas aprovechando el valor del contador i */
+        sopa->n_paraules = i;
+    }
+
+    fclose(arxiu);
+    return ok;
+}
+
+/* Demanar mida de la sopa. Ha de ser entre [10, 40] */
+void demanar_mida ( struct Sopa_t * sopa ) {
     do {
-        /* Leer palabras con fscanf en vez de fgets pk cada linea siempre
-        es una palabra unica
-        */
-        fscanf(arxiu, "%s\n", sopa->paraules[i].contingut);
-        i++;
-    } while ( i < MAX_PARAULES && ! feof(arxiu) );
-    /* Indicar el numero de palabras leidas aprovechando el valor del contador i */
-    sopa->n_paraules = i;
+        printf("Mida de la sopa[10..40]:");
+        scanf("%d", &sopa->dim);
+    } while ( sopa->dim < 10 || sopa->dim > 40 );
 }
 
 /* Mostra nombre de paraules i les propies paraules */

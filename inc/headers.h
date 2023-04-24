@@ -26,11 +26,13 @@ struct Sopa_t{
 /* PROTOTIPOS FUNCIONES */
 extern void missatge_benvinguda( void );
 
-extern void carregar_paraules ( struct Sopa_t * sopa, FILE * arxiu );
+extern bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] );
 
 extern void mostrar_paraules ( struct Sopa_t * sopa );
 
 extern bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp);
+
+extern void demanar_mida ( struct Sopa_t * sopa );
 
 extern void ordenar_paraules ( struct Sopa_t * sopa );
 
