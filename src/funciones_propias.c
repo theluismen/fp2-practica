@@ -12,11 +12,14 @@ void missatge_benvinguda ( void ) {
 }
 
 /* Carrega les paraules d'un fitxer donat a l'estructura principal del programa: sopa*/
-void carregar_paraules ( struct Sopa_t * sopa, FILE * arxiu ) {
+void carregar_paraules ( struct Sopa_t * sopa, char ) {
+    FILE * arxiu = NULL;
     /* Un contador. De hecho se puede usar sopa->n_paraules como contador pero usando
     la variable i el codigo es mas claro
     */
     int i = 0;
+    arxiu = fopen( argv[1], "r");
+
     do {
         /* Leer palabras con fscanf en vez de fgets pk cada linea siempre
         es una palabra unica
@@ -44,6 +47,7 @@ void generar_sopa ( struct Sopa_t * sopa )
 	bool correcto;
 	srand(time(NULL));
 
+    sopa->n_encerts  = 0;
     sopa->lletres    = malloc(sopa->dim * sopa->dim * sizeof(char));   // Espai per a les lletres
     sopa->encertades = malloc(sopa->dim * sopa->dim * sizeof(char)); // Per saber si una lletra correspon a encert
     for (int i = 0; i < sopa->dim * sopa->dim; i++)
@@ -60,8 +64,9 @@ void generar_sopa ( struct Sopa_t * sopa )
 		{
 			x = rand() % sopa->dim;		// Genera x aleatoria
 			y = rand() % sopa->dim;		// Genera y aleatoria
-			d = rand() % 2;				// Genera dirección aleatoria
-			if (d == 0)
+			d = rand() % 4;				// Genera dirección aleatoria
+			// d = rand() % 2 + 2;				// Genera dirección aleatoria
+			if (d == 0) // HORIZONTAL PALANTE
 			{
 				correcto = (sopa->dim - x >= p_length);
 				aux = 0;
@@ -70,17 +75,31 @@ void generar_sopa ( struct Sopa_t * sopa )
 					correcto = (sopa->lletres[ y *sopa->dim+(x+aux)] == '-');		// i*N + j
 					aux++;
 				}
-			}
-			else
-			{
-				correcto = (sopa->dim - y >= p_length);
-				aux = 0;
-				while(aux < p_length && correcto)
+			} else if (d == 1) { // VERTICAL PALANTE
+                correcto = (sopa->dim - y >= p_length);
+                aux = 0;
+                while(aux < p_length && correcto)
+                {
+                    correcto = (sopa->lletres[(y+aux)*sopa->dim+x] == '-');		// i*N + j
+                    aux++;
+                }
+            }else if (d == 2) { // HORIZONTAL PATRAS
+                correcto = (x >= p_length);
+                aux = 0;
+                while(aux < p_length && correcto)
 				{
-					correcto = (sopa->lletres[(y+aux)*sopa->dim+x] == '-');		// i*N + j
+					correcto = (sopa->lletres[ y *sopa->dim+(x-aux)] == '-');		// i*N + j
 					aux++;
 				}
-			}
+            } else {// VERTICAL patras
+                correcto = (y >= p_length);
+                aux = 0;
+                while(aux < p_length && correcto)
+                {
+                    correcto = (sopa->lletres[(y-aux)*sopa->dim+x] == '-');		// i*N + j
+                    aux++;
+                }
+            }
 		}
 		while ( ! correcto);
 
@@ -90,22 +109,31 @@ void generar_sopa ( struct Sopa_t * sopa )
 			{
 				sopa->lletres[y*sopa->dim + (x+j)] = sopa->paraules[i].contingut[j];
 			}
-		}
-		else
-		{
-			for (int j = 0; j < p_length; j++)
+		} else if (d == 1) {
+            for (int j = 0; j < p_length; j++)
+            {
+                sopa->lletres[(y+j)*sopa->dim + x] = sopa->paraules[i].contingut[j];
+            }
+        } else if (d == 2) {
+            for (int j = 0; j < p_length; j++)
 			{
-				sopa->lletres[(y+j)*sopa->dim + x] = sopa->paraules[i].contingut[j];
+				sopa->lletres[y*sopa->dim + (x-j)] = sopa->paraules[i].contingut[j];
 			}
+        } else
+		{
+            for (int j = 0; j < p_length; j++)
+            {
+                sopa->lletres[(y-j)*sopa->dim + x] = sopa->paraules[i].contingut[j];
+            }
 		}
 	}
-    for (int i = 0; i < sopa->dim * sopa->dim; i++)
-    {
-        sopa->encertades[i] = false;
-        // Generem una lletra aleatoriament
-		if (sopa->lletres[i] == '-')
-		{
-			sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
-		}
-    }
+    // for (int i = 0; i < sopa->dim * sopa->dim; i++)
+    // {
+    //     sopa->encertades[i] = false;
+    //     // Generem una lletra aleatoriament
+	// 	if (sopa->lletres[i] == '-')
+	// 	{
+	// 		sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+	// 	}
+    // }
 }
