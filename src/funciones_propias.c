@@ -108,7 +108,7 @@ void generar_sopa ( struct Sopa_t * sopa ) {
         sopa->solucions[i].y = y;
         sopa->solucions[i].dir = d;
         sopa->solucions[i].longitud = p_long;
-
+        // printf("%8s -> %d %d %d\n", sopa->paraules[i].contingut,x,y,d);
         /* Coloca la palabra */
         for ( aux = j = 0; abs(aux) < p_long; j++ ) {
             if ( abs(d) == 1 )
@@ -169,10 +169,10 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
     } else {
         /* Supuestamente ha encontrado una palabra */
         /* Pedimos Coordenadas, direccion y comprovamos que sean validas */
-        // do {
+        do {
             printf("Cord i Dir?:"); scanf("%d %d %d", &x, &y, &d);
             printf("x:%d\ny:%d\nd:%d\n", x, y, d);
-        // } while ( (x < 0 || x > MAX_DIM) || (y < 0 || y > MAX_DIM) );
+        } while ( (x < 0 || x > MAX_DIM) || (y < 0 || y > MAX_DIM) || (abs(d) != 2 && abs(d) != 1) );
 
         /* Ajustar les coordenades del usuari per a usar-les */
         x = x - 1;
@@ -204,23 +204,3 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//
