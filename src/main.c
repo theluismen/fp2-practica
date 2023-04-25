@@ -28,12 +28,20 @@ int main ( int argc, char * argv[] ) {
             generar_sopa(&sopa);
             mostrar_sopa(&sopa);
 
-            /* ESQUEMA BUCLE JUEGO
-            while (! sacabao(&sopa) ) {
-                pedir_jugada(&sopa)
-                mostrar_sopa(&sopa)
+            // int i;
+            /* Bucle principal del Joc*/
+            while ( ! sopa_acabada(&sopa) ) {
+                pedir_jugada(&sopa);
+                // mostrar_sopa(&sopa);
+                // for ( i = 0; i < sopa.dim; i++) {
+                //     for ( int j = 0; j < sopa.dim; j++) {
+                //         // fana = (sopa.encertades[i*sopa.dim + j]) ? 1 : 0;
+                //         printf("%d ", (sopa.encertades[i*sopa.dim + j]) ? 1 : 0);
+                //     }
+                //     printf("\n");
+                // }
+                mostrar_sopa(&sopa);
             }
-            */
         }
     }
 

@@ -1,6 +1,6 @@
 #include "headers.h"
 
-/* Procediment que mostra missatge de benvinguda i els noms del membresdel grup*/
+/* Procediment que mostra missatge de benvinguda i els noms del membres del grup*/
 void missatge_benvinguda ( void ) {
     printf(
         "#############################################################\n"
@@ -38,7 +38,7 @@ void demanar_mida ( struct Sopa_t * sopa ) {
     do {
         printf("Mida de la sopa[10..40]:");
         scanf("%d", &sopa->dim);
-    } while ( sopa->dim < 10 || sopa->dim > 40 );
+    } while ( sopa->dim < MIN_DIM || sopa->dim > MAX_DIM );
 }
 
 /* Mostra nombre de paraules i les propies paraules */
@@ -52,7 +52,7 @@ void mostrar_paraules ( struct Sopa_t * sopa ) {
 
 /* Procediment que genera icoloca les paraules a la sopa de lletres */
 void generar_sopa ( struct Sopa_t * sopa ) {
-    /* x,y: son coordenadas de la sopa. d: es direccion*/
+    /* x,y: son coordenadas de la sopa. d: es direccion */
     int x, y, d, p_long;
 	int i, aux, j; //iterar i->palabras, aux->letras sopa, j->letras 1 palabra
 	bool correcto;
@@ -60,8 +60,9 @@ void generar_sopa ( struct Sopa_t * sopa ) {
     /* Iniciar aleatoriedad */
 	srand(time(NULL));
 
-    /* Inicializar aciertos (0) i crear tabla de letras i aciertos */
+    /* Inicializar aciertos (0), rendicio a false i crear tabla de letras i aciertos */
     sopa->n_encerts  = 0;
+    sopa->rendicio  = false;
     sopa->lletres    = malloc(sopa->dim * sopa->dim * sizeof(char));
     sopa->encertades = malloc(sopa->dim * sopa->dim * sizeof(char));
 
@@ -101,7 +102,8 @@ void generar_sopa ( struct Sopa_t * sopa ) {
             }
         } while ( ! correcto );
 
-        /* Guarda las coordenadas, direccion y longitud de la palabra para comprobar las soluciones */
+        /* Guarda indice, coordenadas, direccion y longitud de la palabra para comprobar las soluciones */
+        sopa->solucions[i].i = i;
         sopa->solucions[i].x = x;
         sopa->solucions[i].y = y;
         sopa->solucions[i].dir = d;
@@ -117,17 +119,108 @@ void generar_sopa ( struct Sopa_t * sopa ) {
         }
 	}
     /* Generamos una letra aleatoriamente en las casillas vacias( marcadas con guion ) */
-    for (int i = 0; i < sopa->dim * sopa->dim; i++) {
-		if (sopa->lletres[i] == '-') {
-			sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+    // for (int i = 0; i < sopa->dim * sopa->dim; i++) {
+	// 	if (sopa->lletres[i] == '-') {
+	// 		sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+    //     }
+    // }
+}
+
+/* Funcion que devuelve true si */
+bool sopa_acabada ( struct Sopa_t * sopa ) {
+    bool acabada;
+    acabada = sopa->rendicio || (sopa->n_encerts == sopa->n_paraules);
+    return acabada;
+}
+
+/* No ESTA FET */
+void pedir_jugada ( struct Sopa_t * sopa ) {
+    char paraula[MAX_LLETRES]; // Guardar la paraula RENDICIO
+    int x, y, d;
+    bool encertada;
+    int i, aux;
+
+    printf("RENDEIXES?:"); scanf("%s", paraula);
+    fflush(stdin);
+    /* Comprovar si l'usuari ha escrit "RENDICIO" */
+    if ( strcmp( paraula, "RENDICIO") == 0 ) {
+        /* Si es rendeix s'han de marcar totes les paraules, o les que quedin per marcar */
+        sopa->rendicio = true;
+        for ( i = 0; i < sopa->n_paraules; i++) {
+            if ( ! sopa->paraules[i].encertada ) {
+                x = sopa->solucions[i].x;
+                y = sopa->solucions[i].y;
+                d = sopa->solucions[i].dir;
+                aux = 0;
+
+                /* Bucle que marca la paraula */
+                while ( abs(aux) < sopa->solucions[i].longitud ) {
+                    if ( abs(d) == 1 )
+                        sopa->encertades[y*sopa->dim + x+aux] = true;
+                    else
+                        sopa->encertades[(y+aux)*sopa->dim + x] = true;
+                    aux = ( d < 0 ) ? aux-1 : aux+1;
+                }
+            }
+
+            /* Eliminar-la de la llista o marcar-la com encertada */
+            sopa->paraules[i].encertada = true;
+        }
+    } else {
+        /* Supuestamente ha encontrado una palabra */
+        /* Pedimos Coordenadas, direccion y comprovamos que sean validas */
+        // do {
+            printf("Cord i Dir?:"); scanf("%d %d %d", &x, &y, &d);
+            printf("x:%d\ny:%d\nd:%d\n", x, y, d);
+        // } while ( (x < 0 || x > MAX_DIM) || (y < 0 || y > MAX_DIM) );
+
+        /* Ajustar les coordenades del usuari per a usar-les */
+        x = x - 1;
+        y = y - 1;
+
+        /* Comprobar si les coordenades i direccio es corresponen amb alguna paraula */
+        encertada = false;
+        for (i = 0; i < sopa->n_paraules && ! encertada; i++) {
+            if ( x == sopa->solucions[i].x && y == sopa->solucions[i].y && d == sopa->solucions[i].dir ) {
+                encertada = true;
+                aux = i;
+            }
+        }
+        /* Marcarla si es necesari */
+        if ( encertada ) {
+            /* Bucle que marca la paraula */
+            i = 0;
+            while ( abs(i) < sopa->solucions[aux].longitud ) {
+                if ( abs(d) == 1 )
+                    sopa->encertades[y*sopa->dim + x+i] = true;
+                 else
+                    sopa->encertades[(y+i)*sopa->dim + x] = true;
+                i = ( d < 0 ) ? i-1 : i+1;
+            }
+
+            /* Eliminar la paraula de la llista i sumar encerts */
+            sopa->paraules[aux].encertada = true;
+            sopa->n_encerts++;
         }
     }
 }
 
-/* No ESTA FET*/
-void pedir_jugada ( struct Sopa_t * sopa ) {
-    int x, y, d, p_long;
 
-    printf("Trobes?:");
-    // scanf("", );
-}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//
