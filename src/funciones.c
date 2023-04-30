@@ -23,7 +23,6 @@ void mostrar_sopa (struct Sopa_t * sopa) {
     printf("\n");
     // printf("\033[0m");  // Tornem al color per defecte
 
-
     // Mostrem les lletres. Cada lletra ocupa dos espais:
     // Si correspon a un encert, es marca
     for (i = 0; i < sopa->dim ; i++) {
@@ -33,7 +32,7 @@ void mostrar_sopa (struct Sopa_t * sopa) {
 
         for (j = 0; j < sopa->dim; j++) {
             if (sopa->encertades[i * sopa->dim + j]) {
-                // printf("\033[0;42m");   // Color verd de fons
+                // printf("\033[1;32m");   // Color verd de fons
                 printf(" %c", sopa->lletres[i * sopa->dim + j]);
                 // printf("\033[0m");  // Tornem al color per defecte
             } else {
@@ -44,11 +43,13 @@ void mostrar_sopa (struct Sopa_t * sopa) {
     }
     printf("\n");
 
-    printf("Portes %d encerts.\n", sopa->n_encerts);
-    printf("Paraules per trobar: %d\n", sopa->n_paraules - sopa->n_encerts);
-    for (int i = 0; i < sopa->n_paraules; i++) {
-        if ( ! sopa->paraules[i].encertada ) {
-            printf("%s\n", sopa->paraules[i].contingut);
-        }
+    if ( ! sopa_acabada(sopa) ) {
+        printf("Portes %d encerts.\n", sopa->n_encerts);
+        printf("Paraules per trobar: %d\n", sopa->n_paraules - sopa->n_encerts);
+    } else {
+        ( sopa->rendicio ) ? printf("## T'HAS RENDIT ##\n") : printf("## HAS GUANYAT ##\n");
+        printf("Encerts: %d\n", sopa->n_encerts);
+        printf("Paraules Restants: %d\n", sopa->n_paraules - sopa->n_encerts);
     }
+    mostrar_paraules(sopa);
 }

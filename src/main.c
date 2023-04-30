@@ -18,28 +18,23 @@ int main ( int argc, char * argv[] ) {
             /* Ordeno les paraules a sopa.paraules */
             ordenar_paraules( &sopa );
 
-            /* Mostro les paraules a sopa.paraules */
+            /* Mostro TOTES les paraules a sopa.paraules */
+            printf("Hi ha un total de %d paraules:\n", sopa.n_paraules );
             mostrar_paraules( &sopa );
 
             demanar_mida( &sopa );
 
-            /* Generar Sopa */
+            /* Generar Sopa i Mostar-la */
             generar_sopa(&sopa);
             mostrar_sopa(&sopa);
 
-            // int i;
             /* Bucle principal del Joc*/
             while ( ! sopa_acabada(&sopa) ) {
                 pedir_jugada(&sopa);
                 mostrar_sopa(&sopa);
-                // for ( int i = 0; i < sopa.dim; i++) {
-                //     for ( int j = 0; j < sopa.dim; j++) {
-                //         // fana = (sopa.encertades[i*sopa.dim + j]) ? 1 : 0;
-                //         printf("%c ", (sopa.encertades[i*sopa.dim + j]) ? ' ' : '0');
-                //     }
-                //     printf("\n");
-                // }
             }
+            /* Alliberar taules */
+            tancar_sopa(&sopa);
         }
     }
 

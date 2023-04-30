@@ -22,6 +22,7 @@ bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] ) {
             /* Leer palabras con fscanf en vez de fgets pk cada linea siempre
             es una palabra unica */
             fscanf(arxiu, "%s\n", sopa->paraules[i].contingut);
+            sopa->paraules[i].encertada = false;
             i++;
         } while ( i < MAX_PARAULES && ! feof(arxiu) );
         /* Indicar el numero de palabras leidas aprovechando el valor del contador i */
@@ -43,10 +44,10 @@ void demanar_mida ( struct Sopa_t * sopa ) {
 
 /* Mostra nombre de paraules i les propies paraules */
 void mostrar_paraules ( struct Sopa_t * sopa ) {
-    int i;
-    printf("Hi ha un total de %d paraules:\n", sopa->n_paraules );
-    for ( i = 0; i < sopa->n_paraules; i++ ) {
-        printf("%4s%-11s\n", "",sopa->paraules[i].contingut );
+    for ( int i = 0; i < sopa->n_paraules; i++ ) {
+        if ( ! sopa->paraules[i].encertada ) {
+            printf("%4s%-11s\n", "", sopa->paraules[i].contingut );
+        }
     }
 }
 
@@ -102,8 +103,7 @@ void generar_sopa ( struct Sopa_t * sopa ) {
             }
         } while ( ! correcto );
 
-        /* Guarda indice, coordenadas, direccion y longitud de la palabra para comprobar las soluciones */
-        sopa->solucions[i].i = i;
+        /* Guarda coordenadas, direccion y longitud de la palabra para comprobar las soluciones */
         sopa->solucions[i].x = x;
         sopa->solucions[i].y = y;
         sopa->solucions[i].dir = d;
@@ -135,13 +135,17 @@ bool sopa_acabada ( struct Sopa_t * sopa ) {
 
 /* No ESTA FET */
 void pedir_jugada ( struct Sopa_t * sopa ) {
-    char paraula[MAX_LLETRES]; // Guardar la paraula RENDICIO
+    char paraula[100]; // Guardar la paraula RENDICIO
     int x, y, d;
     bool encertada;
     int i, aux;
 
-    printf("RENDEIXES?:"); scanf("%s", paraula);
-    fflush(stdin);
+    /* */
+    printf("\nRENDEIXES?:");
+    getchar();
+    fgets(paraula, 100, stdin);
+    paraula[strcspn(paraula,"\n")] = '\0'; //Cambiar salto de linea de fgets por null char
+
     /* Comprovar si l'usuari ha escrit "RENDICIO" */
     if ( strcmp( paraula, "RENDICIO") == 0 ) {
         /* Si es rendeix s'han de marcar totes les paraules, o les que quedin per marcar */
@@ -151,9 +155,9 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
                 x = sopa->solucions[i].x;
                 y = sopa->solucions[i].y;
                 d = sopa->solucions[i].dir;
-                aux = 0;
 
                 /* Bucle que marca la paraula */
+                aux = 0;
                 while ( abs(aux) < sopa->solucions[i].longitud ) {
                     if ( abs(d) == 1 )
                         sopa->encertades[y*sopa->dim + x+aux] = true;
@@ -170,8 +174,9 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
         /* Supuestamente ha encontrado una palabra */
         /* Pedimos Coordenadas, direccion y comprovamos que sean validas */
         do {
-            printf("Cord i Dir?:"); scanf("%d %d %d", &x, &y, &d);
-            printf("x:%d\ny:%d\nd:%d\n", x, y, d);
+            printf("Cord i Dir?:");
+            scanf("%d %d %d", &x, &y, &d);
+            // printf("x:%d\ny:%d\nd:%d\n", x, y, d);
         } while ( (x < 0 || x > MAX_DIM) || (y < 0 || y > MAX_DIM) || (abs(d) != 2 && abs(d) != 1) );
 
         /* Ajustar les coordenades del usuari per a usar-les */
@@ -186,8 +191,9 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
                 aux = i;
             }
         }
-        /* Marcarla si es necesari */
-        if ( encertada ) {
+
+        /* Marcarla si les dades son correctes i no ha sigut encertada abans */
+        if ( encertada && ! sopa->paraules[aux].encertada ) {
             /* Bucle que marca la paraula */
             i = 0;
             while ( abs(i) < sopa->solucions[aux].longitud ) {
@@ -203,4 +209,11 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
             sopa->n_encerts++;
         }
     }
+}
+
+/* Procediment que allibera les dues taules (lletres, encertades) de l'struct sopa,
+    creades previament amb malloc() */
+void tancar_sopa ( struct Sopa_t * sopa ) {
+    free(sopa->lletres);
+    free(sopa->encertades);
 }

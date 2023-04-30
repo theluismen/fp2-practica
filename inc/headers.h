@@ -17,7 +17,6 @@ struct Paraula_t {
 
 /* Definicio del tipus per a desar les dades de les paraules A LA SOPA */
 struct Coords_t {
-    int i;          // Index de la paraula
     int x;          // Coordenada x de la palabra
     int y;          // Coordenada y de la palabra
     int dir;        // Dirección de la palabra (1 = horizontal palante, 2 = vertical palante, -1 = horizontal patras, -2 = vertical patras)
@@ -56,3 +55,5 @@ extern bool sopa_acabada ( struct Sopa_t * sopa );
 extern void mostrar_sopa ( struct Sopa_t * sopa );
 
 extern void pedir_jugada ( struct Sopa_t * sopa );
+
+extern void tancar_sopa ( struct Sopa_t * sopa );
