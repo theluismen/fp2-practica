@@ -6,7 +6,7 @@ void mostrar_sopa (struct Sopa_t * sopa) {
     int i, j;
     int p;
     // Mostrem els numeros de columna
-    // printf("\033[0;31m");   // Color
+    printf("\033[0;31m");   // Color
     printf("  ");
     for (i = 10; i < sopa->dim + 1; i+=10) {
         for (j=0; j < 18; j++)
@@ -21,20 +21,20 @@ void mostrar_sopa (struct Sopa_t * sopa) {
     }
 
     printf("\n");
-    // printf("\033[0m");  // Tornem al color per defecte
+    printf("\033[0m");  // Tornem al color per defecte
 
     // Mostrem les lletres. Cada lletra ocupa dos espais:
     // Si correspon a un encert, es marca
     for (i = 0; i < sopa->dim ; i++) {
-        // printf("\033[0;31m");   // Color
+        printf("\033[0;31m");   // Color
         printf("%-2d", i + 1);  // Mostrar numero de linia
-        // printf("\033[0m");  // Tornem al color per defecte
+        printf("\033[0m");      // Tornem al color per defecte
 
         for (j = 0; j < sopa->dim; j++) {
             if (sopa->encertades[i * sopa->dim + j]) {
-                // printf("\033[1;32m");   // Color verd de fons
+                printf("\033[1;32m");   // Color verd de fons
                 printf(" %c", sopa->lletres[i * sopa->dim + j]);
-                // printf("\033[0m");  // Tornem al color per defecte
+                printf("\033[0m");      // Tornem al color per defecte
             } else {
                 printf(" %c", sopa->lletres[i * sopa->dim + j]);
             }
