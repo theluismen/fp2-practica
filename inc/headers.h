@@ -9,18 +9,18 @@
 #define MIN_DIM 10
 #define MAX_DIM 40
 
-/* Definicio del tipus per a desar les paraules */
+/* Definició del tipus per a desar les paraules */
 struct Paraula_t {
     char contingut[MAX_LLETRES + 1];   // Lletres de la paraula (comptem centinella)
     bool encertada;   // La paraula s'ha encertat
 };
 
-/* Definicio del tipus per a desar les dades de les paraules A LA SOPA */
+/* Definició del tipus per a desar les dades de les paraules A LA SOPA */
 struct Coords_t {
-    int x;          // Coordenada x de la palabra
-    int y;          // Coordenada y de la palabra
-    int dir;        // Dirección de la palabra (1 = horizontal palante, 2 = vertical palante, -1 = horizontal patras, -2 = vertical patras)
-    int longitud;   // longitud palabra
+    int x;          // Coordenada x de la paraula
+    int y;          // Coordenada y de la paraula
+    int dir;        // Direcció de la paraula (1 = horizontal palante, 2 = vertical palante, -1 = horizontal patras, -2 = vertical patras)
+    int longitud;   // longitud paraula
 };
 
 /* Definicio del tipus per a desar les dades de la sopa de lletres */
@@ -35,7 +35,7 @@ struct Sopa_t {
     int n_encerts;    // Nombre de paraules encertades
 };
 
-/* PROTOTIPOS FUNCIONES */
+/* FUNCIONS */
 extern void missatge_benvinguda( void );
 
 extern bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] );
