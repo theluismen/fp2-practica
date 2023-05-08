@@ -1,6 +1,6 @@
 #include "headers.h"
 
-/* Procediment que mostra missatge de benvinguda i els noms del membres del grup*/
+/* Procediment que mostra missatge de benvinguda i els noms del membres del grup */
 void missatge_benvinguda ( void ) {
     printf(
         "#############################################################\n"
@@ -10,7 +10,7 @@ void missatge_benvinguda ( void ) {
     );
 }
 
-/* Carrega les paraules d'un fitxer donat a l'estructura principal del programa: sopa*/
+/* Carrega les paraules d'un fitxer donat a l'estructura principal del programa: sopa */
 bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] ) {
     FILE * arxiu = NULL;
     bool ok = false;
@@ -19,13 +19,13 @@ bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] ) {
     arxiu = fopen( nom_arxiu, "r");
     if ( arxiu != NULL ) {
         do {
-            /* Leer palabras con fscanf en vez de fgets pk cada linea siempre
-            es una palabra unica */
+            /* Llegir paraules amb fscanf en comptes de fgets perquè cada línia sempre
+            és una paraula única */
             fscanf(arxiu, "%s\n", sopa->paraules[i].contingut);
             sopa->paraules[i].encertada = false;
             i++;
         } while ( i < MAX_PARAULES && ! feof(arxiu) );
-        /* Indicar el numero de palabras leidas aprovechando el valor del contador i */
+        /* Indicar el nombre de paraules llegides aprofitant el valor del contador i */
         sopa->n_paraules = i;
         ok = true;
     }
@@ -51,40 +51,40 @@ void mostrar_paraules ( struct Sopa_t * sopa ) {
     }
 }
 
-/* Procediment que genera icoloca les paraules a la sopa de lletres */
+/* Procediment que genera i coloca les paraules a la sopa de lletres */
 void generar_sopa ( struct Sopa_t * sopa ) {
-    /* x,y: son coordenadas de la sopa. d: es direccion */
+    /* x,y: són coordenades de la sopa. d: és direcció */
     int x, y, d, p_long;
-	int i, aux, j; //iterar i->palabras, aux->letras sopa, j->letras 1 palabra
+	int i, aux, j;      //iterar i->palabras, aux->letras sopa, j->letras 1 palabra
 	bool correcto;
 
-    /* Iniciar aleatoriedad */
+    /* Iniciar aleatorietat */
 	srand(time(NULL));
 
-    /* Inicializar aciertos (0), rendicio a false i crear tabla de letras i aciertos */
+    /* Inicialitzar encerts (0), rendicio a false i crear taula de lletres i encerts */
     sopa->n_encerts  = 0;
     sopa->rendicio  = false;
     sopa->lletres    = malloc(sopa->dim * sopa->dim * sizeof(char));
     sopa->encertades = malloc(sopa->dim * sopa->dim * sizeof(char));
 
-    /* Inicializamos la tabla letras con guiones y a falso la de aciertos */
+    /* Inicialitzem la taula lletres amb guions i a false la d'encerts */
     for (i = 0; i < sopa->dim * sopa->dim; i++) {
         sopa->encertades[i] = false;
         sopa->lletres[i]    = '-';
     }
 
-    /* Para cada palabras, primero miro si la puedo colocar. Cuando pueda la coloco */
+    /* Per cada paraula, primer miro si la puc col·locar. Quan pugui la coloco */
 	for (i = 0; i < sopa->n_paraules; i++) {
-		p_long = strlen(sopa->paraules[i].contingut);   // Longitud de la palabra
+		p_long = strlen(sopa->paraules[i].contingut);   // Longitud de la paraula
 
-        /* Generar parametros de colocacion CORRECTOS */
+        /* Generar parametres de col·locació CORRECTES */
 		do {
 			x = rand() % sopa->dim;		    // Genera x aleatoria
 			y = rand() % sopa->dim;		    // Genera y aleatoria
-			d = rand() % 2 + 1;				// Genera uno de estos valores [-2,-1,1,2]
+			d = rand() % 2 + 1;				// Genera un d'aquests valors [-2,-1,1,2]
 			d = (rand() % 2) ? -d : d;
 
-            /* Comprueba si cabe la palabra dentro de los limites */
+            /* Comprova si cap la paraula dins dels límits */
             switch ( d ) {
                 case 1:  correcto = (sopa->dim - x) >= p_long;  break;
                 case 2:  correcto = (sopa->dim - y) >= p_long;  break;
@@ -92,7 +92,7 @@ void generar_sopa ( struct Sopa_t * sopa ) {
                 case -2: correcto = (y >= p_long);              break;
             }
 
-            /* Comprueba que no haya ninguna palabra en medio */
+            /* Comprova que no hi hagi cap paraula enmig */
             aux = 0;
             while ( abs(aux) < p_long && correcto ) {
                 if ( abs(d) == 1 )
@@ -103,13 +103,13 @@ void generar_sopa ( struct Sopa_t * sopa ) {
             }
         } while ( ! correcto );
 
-        /* Guarda coordenadas, direccion y longitud de la palabra para comprobar las soluciones */
+        /* Guarda coordenades, direcció i longitud de la paraula per comprovar les solucions */
         sopa->solucions[i].x = x;
         sopa->solucions[i].y = y;
         sopa->solucions[i].dir = d;
         sopa->solucions[i].longitud = p_long;
         // printf("%8s -> %d %d %d\n", sopa->paraules[i].contingut,x,y,d);
-        /* Coloca la palabra */
+        /* Coloca la paraula */
         for ( aux = j = 0; abs(aux) < p_long; j++ ) {
             if ( abs(d) == 1 )
                 sopa->lletres[y*sopa->dim + (x+aux)] = sopa->paraules[i].contingut[j];
@@ -118,22 +118,22 @@ void generar_sopa ( struct Sopa_t * sopa ) {
             aux = ( d < 0 ) ? aux-1 : aux+1;
         }
 	}
-    /* Generamos una letra aleatoriamente en las casillas vacias( marcadas con guion ) */
-    // for (int i = 0; i < sopa->dim * sopa->dim; i++) {
-	// 	if (sopa->lletres[i] == '-') {
-	// 		sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
-    //     }
-    // }
+    /* Generem una lletra aleatoriament en les caselles buides ( marcades amb guió ) */
+    for (int i = 0; i < sopa->dim * sopa->dim; i++) {
+        if (sopa->lletres[i] == '-') {
+            sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+        }
+    }
 }
 
-/* Funcion que devuelve true si */
+/* Funció que retorna true si s'ha acabat la partida */
 bool sopa_acabada ( struct Sopa_t * sopa ) {
     bool acabada;
     acabada = sopa->rendicio || (sopa->n_encerts == sopa->n_paraules);
     return acabada;
 }
 
-/* No ESTA FET */
+/* Funció que demana i processa la jugada */
 void pedir_jugada ( struct Sopa_t * sopa ) {
     char paraula[100]; // Guardar la paraula RENDICIO
     int x, y, d;
@@ -144,7 +144,7 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
     printf("\nRENDEIXES?:");
     getchar();
     fgets(paraula, 100, stdin);
-    paraula[strcspn(paraula,"\n")] = '\0'; //Cambiar salto de linea de fgets por null char
+    paraula[strcspn(paraula,"\n")] = '\0'; //Canviar salt de línia de fgets per null char
 
     /* Comprovar si l'usuari ha escrit "RENDICIO" */
     if ( strcmp( paraula, "RENDICIO") == 0 ) {
@@ -171,8 +171,8 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
             sopa->paraules[i].encertada = true;
         }
     } else {
-        /* Supuestamente ha encontrado una palabra */
-        /* Pedimos Coordenadas, direccion y comprovamos que sean validas */
+        /* Supuestament ha trobat una paraula */
+        /* Pedim Coordenades, direcció y comprovem que siguin vàlides */
         do {
             printf("Cord i Dir?:");
             scanf("%d %d %d", &x, &y, &d);
@@ -183,7 +183,7 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
         x = x - 1;
         y = y - 1;
 
-        /* Comprobar si les coordenades i direccio es corresponen amb alguna paraula */
+        /* Comprobar si les coordenades i direcció es corresponen amb alguna paraula */
         encertada = false;
         for (i = 0; i < sopa->n_paraules && ! encertada; i++) {
             if ( x == sopa->solucions[i].x && y == sopa->solucions[i].y && d == sopa->solucions[i].dir ) {
@@ -192,7 +192,7 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
             }
         }
 
-        /* Marcarla si les dades son correctes i no ha sigut encertada abans */
+        /* Marcar-la si les dades són correctes i no ha sigut encertada abans */
         if ( encertada && ! sopa->paraules[aux].encertada ) {
             /* Bucle que marca la paraula */
             i = 0;
