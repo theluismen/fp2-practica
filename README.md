@@ -18,11 +18,11 @@ a la sopa de lletres.
 - [x] Ordenar Paraules
 - [x] Generar sopa de lletres amb les paraules
 ### Més coses
-- [ ] Pedir mida de sopa de lletres (10-40)
-- [ ] Mostrar sopa de lletres i paraules restants
-- [ ] Torn del jugador
-- [ ] Comprobar paraula trobada i eliminar-la de la llista
-- [ ] Missatge de victoria/rendició
+- [x] Pedir mida de sopa de lletres (10-40)
+- [x] Mostrar sopa de lletres i paraules restants
+- [x] Torn del jugador
+- [x] Comprobar paraula trobada i eliminar-la de la llista
+- [x] Missatge de victoria/rendició
 
 ## Membres i Perfils del Grup
 * Luis Manuel Ocampo - **Desenvolupador principal**
