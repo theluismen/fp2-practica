@@ -3,11 +3,12 @@
 int main ( int argc, char * argv[] ) {
     struct Sopa_t sopa;
 
-    /* Mostrar Missatge de Benvinguda XD*/
+    /* Mostrar Missatge de Benvinguda */
     missatge_benvinguda();
 
+    /* Comprova que existeixen els arguments necessaris per iniciar el programa */
     if ( argv[1] == NULL || argc > 2 ) {
-        /* Missatge d'error si no s'indica el fitxer*/
+        /* Missatge d'error si no s'indica el fitxer */
         printf("ERROR. S'ha d'especificar l'arxiu que conte les paraules.\nSortint de programa\n");
     } else {
         /* Aqui es comencen a fer coses */
@@ -24,7 +25,7 @@ int main ( int argc, char * argv[] ) {
 
             demanar_mida( &sopa );
 
-            /* Generar Sopa i Mostar-la */
+            /* Generar Sopa i Mostrar-la */
             generar_sopa(&sopa);
             mostrar_sopa(&sopa);
 
@@ -37,6 +38,5 @@ int main ( int argc, char * argv[] ) {
             tancar_sopa(&sopa);
         }
     }
-
     return 0;
 }
