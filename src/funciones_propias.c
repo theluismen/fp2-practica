@@ -1,6 +1,8 @@
 #include "headers.h"
 
-/* Procediment que mostra missatge de benvinguda i els noms del membres del grup */
+/**
+ * @brief Mostra el missatge de benvinguda i els noms dels membres del grup
+ */
 void missatge_benvinguda ( void ) {
     printf(
         "#############################################################\n"
@@ -10,7 +12,13 @@ void missatge_benvinguda ( void ) {
     );
 }
 
-/* Carrega les paraules d'un fitxer donat a l'estructura principal del programa: sopa */
+/**
+ * @brief Carrega les paraules d'un fitxer donat a l'estructura principal del programa
+ * @param sopa (E/S) Struct amb les dades del joc
+ * @param nom_arxiu (E) Nom de l'arxiu que s'obrirà per aconseguir les paraules
+ * @return true si s'han pogut carregar les paraules
+ * @return false si hi ha hagut algun error en la càrrega de les paraules
+ */
 bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] ) {
     FILE * arxiu = NULL;
     bool ok = false;
@@ -34,7 +42,10 @@ bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] ) {
     return ok;
 }
 
-/* Demanar mida de la sopa. Ha de ser entre [10, 40] */
+/**
+ * @brief Demanar mida de la sopa. Ha de ser entre [MIN_DIM, MAX_DIM]
+ * @param sopa (E/S) Struct amb les dades del joc
+ */
 void demanar_mida ( struct Sopa_t * sopa ) {
     do {
         printf("Mida de la sopa[10..40]:");
@@ -42,7 +53,11 @@ void demanar_mida ( struct Sopa_t * sopa ) {
     } while ( sopa->dim < MIN_DIM || sopa->dim > MAX_DIM );
 }
 
-/* Mostra nombre de paraules i les propies paraules */
+/**
+ * @brief Mostra nombre de paraules i les propies paraules
+ * @param sopa (E/S) Struct amb les dades del joc
+ * @pre Les paraules estan carregades
+ */
 void mostrar_paraules ( struct Sopa_t * sopa ) {
     for ( int i = 0; i < sopa->n_paraules; i++ ) {
         if ( ! sopa->paraules[i].encertada ) {
@@ -51,7 +66,12 @@ void mostrar_paraules ( struct Sopa_t * sopa ) {
     }
 }
 
-/* Procediment que genera i coloca les paraules a la sopa de lletres */
+/**
+ * @brief Mostra nombre de paraules i les propies paraules
+ * @param sopa (E/S) Struct amb les dades del joc
+ * @pre Les paraules estan carregades
+ * @pre La mida de la sopa està inicialitzada
+ */
 void generar_sopa ( struct Sopa_t * sopa ) {
     /* x,y: són coordenades de la sopa. d: és direcció */
     int x, y, d, p_long;
@@ -92,13 +112,13 @@ void generar_sopa ( struct Sopa_t * sopa ) {
                 case -2: correcto = (y >= p_long);              break;
             }
 
-            /* Comprova que no hi hagi cap paraula enmig */
+            /* Comprova que no hi hagi cap paraula enmig o que la lletra que es connecti sigui la mateixa */
             aux = 0;
             while ( abs(aux) < p_long && correcto ) {
                 if ( abs(d) == 1 )
-                    correcto = sopa->lletres[y*sopa->dim + (x+aux)] == '-';
+                    correcto = sopa->lletres[y*sopa->dim + (x+aux)] == '-' || sopa->lletres[y*sopa->dim + (x+aux)] == sopa->paraules[i].contingut[abs(aux)];
                 else
-                    correcto = sopa->lletres[(y+aux)*sopa->dim + x] == '-';
+                    correcto = sopa->lletres[(y+aux)*sopa->dim + x] == '-' || sopa->lletres[(y+aux)*sopa->dim + x] == sopa->paraules[i].contingut[abs(aux)];
                 aux = ( d < 0 ) ? aux-1 : aux+1;
             }
         } while ( ! correcto );
@@ -119,21 +139,29 @@ void generar_sopa ( struct Sopa_t * sopa ) {
         }
 	}
     /* Generem una lletra aleatoriament en les caselles buides ( marcades amb guió ) */
-    for (int i = 0; i < sopa->dim * sopa->dim; i++) {
-        if (sopa->lletres[i] == '-') {
-            sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
-        }
-    }
+    //for (int i = 0; i < sopa->dim * sopa->dim; i++) {
+    //    if (sopa->lletres[i] == '-') {
+    //        sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+    //    }
+    //}
 }
 
-/* Funció que retorna true si s'ha acabat la partida */
+/**
+ * @brief Comprova l'estat de la partida
+ * @param sopa (E) Struct amb les dades del joc
+ * @return true si el jugador es rendeix o si ha encertat totes les paraules
+ * @return false si el joc continua
+ */
 bool sopa_acabada ( struct Sopa_t * sopa ) {
     bool acabada;
     acabada = sopa->rendicio || (sopa->n_encerts == sopa->n_paraules);
     return acabada;
 }
 
-/* Funció que demana i processa la jugada */
+/**
+ * @brief Demana i procesa la jugada
+ * @param sopa (E/S) Struct amb les dades del joc
+ */
 void pedir_jugada ( struct Sopa_t * sopa ) {
     char paraula[100]; // Guardar la paraula RENDICIO
     int x, y, d;
@@ -148,28 +176,7 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
 
     /* Comprovar si l'usuari ha escrit "RENDICIO" */
     if ( strcmp( paraula, "RENDICIO") == 0 ) {
-        /* Si es rendeix s'han de marcar totes les paraules, o les que quedin per marcar */
-        sopa->rendicio = true;
-        for ( i = 0; i < sopa->n_paraules; i++) {
-            if ( ! sopa->paraules[i].encertada ) {
-                x = sopa->solucions[i].x;
-                y = sopa->solucions[i].y;
-                d = sopa->solucions[i].dir;
-
-                /* Bucle que marca la paraula */
-                aux = 0;
-                while ( abs(aux) < sopa->solucions[i].longitud ) {
-                    if ( abs(d) == 1 )
-                        sopa->encertades[y*sopa->dim + x+aux] = true;
-                    else
-                        sopa->encertades[(y+aux)*sopa->dim + x] = true;
-                    aux = ( d < 0 ) ? aux-1 : aux+1;
-                }
-            }
-
-            /* Eliminar-la de la llista o marcar-la com encertada */
-            sopa->paraules[i].encertada = true;
-        }
+        rendicio(sopa, &x, &y, &d);
     } else {
         /* Supuestament ha trobat una paraula */
         /* Pedim Coordenades, direcció y comprovem que siguin vàlides */
@@ -211,8 +218,44 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
     }
 }
 
-/* Procediment que allibera les dues taules (lletres, encertades) de l'struct sopa,
-    creades previament amb malloc() */
+/**
+ * @brief Es marquen totes les paraules, o les que quedin per marcar
+ * @param sopa (E/S) Struct amb les dades del joc
+ * @param x (E/S) Coordenada x
+ * @param y (E/S) Coordenada y
+ * @param d (E/S) Direcció
+ * @post Totes les paraules están marcades com encertades
+ */
+void rendicio(struct Sopa_t * sopa, int *x, int *y, int *d)
+{
+    int aux;
+            sopa->rendicio = true;
+        for ( int i = 0; i < sopa->n_paraules; i++) {
+            if ( ! sopa->paraules[i].encertada ) {
+                *x = sopa->solucions[i].x;
+                *y = sopa->solucions[i].y;
+                *d = sopa->solucions[i].dir;
+
+                /* Bucle que marca la paraula */
+                aux = 0;
+                while ( abs(aux) < sopa->solucions[i].longitud ) {
+                    if ( abs(*d) == 1 )
+                        sopa->encertades[(*y)*sopa->dim + (*x)+aux] = true;
+                    else
+                        sopa->encertades[((*y)+aux)*sopa->dim + (*x)] = true;
+                    aux = ( *d < 0 ) ? aux-1 : aux+1;
+                }
+            }
+
+            /* Eliminar-la de la llista o marcar-la com encertada */
+            sopa->paraules[i].encertada = true;
+        }
+}
+
+/**
+ * @brief Allibera la memòria de les dues taules creades amb malloc()
+ * @param sopa (E/S) Struct amb les dades del joc
+ */
 void tancar_sopa ( struct Sopa_t * sopa ) {
     free(sopa->lletres);
     free(sopa->encertades);
