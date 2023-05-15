@@ -9,6 +9,15 @@
     se encuentran letras distintas y el numero de desplazamientos realizados
     para encontrar letras distintas.
 */
+/**
+ * @brief Determina si dos strings estan ordenats
+ * @param str1 (E) Primera paraula
+ * @param str2 (E) Segona paraula
+ * @param diff (S) La diferencia quan es troben lletres diferents
+ * @param desp (S) El nombre de desplaçaments realitzats per trobar lletres diferents
+ * @return true si str1 i str2 NO estan ordenades alfabèticament
+ * @return false si str1 i str2 estan ordenades alfabèticament
+ */
 bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp) {
     bool swap = false;
     int k;
@@ -32,8 +41,13 @@ bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp) {
     return swap;
 }
 
-/* Procedimiento que ordena las cadenas de caracteres de un struct Sopa_t.
-    El algoritmo es una especie de ordenacion por seleccion adaptado a strings*/
+/* El algoritmo es una especie de ordenacion por seleccion adaptado a strings */
+/**
+ * @brief Ordena les cadenes de caracters de la llista de paraules
+ * @param sopa (E/S) Struct amb les dades del joc
+ * @pre Hi ha alguna paraula en la llista
+ * @post La llista de paraules està ordenada alfabèticament
+ */
 void ordenar_paraules ( struct Sopa_t * sopa ) {
     int diff, desp,                 /* Variables para guardar informacion */
         min_diff,                   /*  de los strings comparados y */
@@ -59,7 +73,7 @@ void ordenar_paraules ( struct Sopa_t * sopa ) {
                 }
             }
         }
-        /* SI ES NECESARIO, Cambio plabras */
+        /* SI ES NECESARIO, Cambio palabras */
         if ( ind_min_diff != -1 ) {
             strcpy(aux, sopa->paraules[i].contingut);
             strcpy(sopa->paraules[i].contingut, sopa->paraules[ind_min_diff].contingut);
