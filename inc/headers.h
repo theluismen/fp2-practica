@@ -11,7 +11,7 @@
 
 /* Definició del tipus per a desar les paraules */
 struct Paraula_t {
-    char contingut[MAX_LLETRES + 1];   // Lletres de la paraula (comptem centinella)
+    char contingut[MAX_LLETRES];   // Lletres de la paraula (comptem centinella)
     bool encertada;   // La paraula s'ha encertat
 };
 
@@ -36,24 +36,26 @@ struct Sopa_t {
 };
 
 /* FUNCIONS */
-extern void missatge_benvinguda( void );
+void missatge_benvinguda( void );
 
-extern bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] );
+bool carregar_paraules ( struct Sopa_t * sopa, char nom_arxiu[] );
 
-extern void mostrar_paraules ( struct Sopa_t * sopa );
+void mostrar_paraules ( struct Sopa_t * sopa );
 
-extern bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp );
+bool estan_ordenades ( char str1[], char str2[], int * diff, int * desp );
 
-extern void demanar_mida ( struct Sopa_t * sopa );
+void demanar_mida ( struct Sopa_t * sopa );
 
-extern void ordenar_paraules ( struct Sopa_t * sopa );
+void ordenar_paraules ( struct Sopa_t * sopa );
 
-extern void generar_sopa ( struct Sopa_t * sopa );
+void generar_sopa ( struct Sopa_t * sopa );
 
-extern bool sopa_acabada ( struct Sopa_t * sopa );
+bool sopa_acabada ( struct Sopa_t * sopa );
 
-extern void mostrar_sopa ( struct Sopa_t * sopa );
+void mostrar_sopa ( struct Sopa_t * sopa );
 
-extern void pedir_jugada ( struct Sopa_t * sopa );
+void pedir_jugada ( struct Sopa_t * sopa );
 
-extern void tancar_sopa ( struct Sopa_t * sopa );
+void tancar_sopa ( struct Sopa_t * sopa );
+
+void rendicio ( struct Sopa_t * sopa, int *x, int *y, int *d);

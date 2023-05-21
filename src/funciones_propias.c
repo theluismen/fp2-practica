@@ -139,11 +139,11 @@ void generar_sopa ( struct Sopa_t * sopa ) {
         }
 	}
     /* Generem una lletra aleatoriament en les caselles buides ( marcades amb guió ) */
-    //for (int i = 0; i < sopa->dim * sopa->dim; i++) {
-    //    if (sopa->lletres[i] == '-') {
-    //        sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
-    //    }
-    //}
+    for (int i = 0; i < sopa->dim * sopa->dim; i++) {
+       if (sopa->lletres[i] == '-') {
+           sopa->lletres[i] = 'A' + (rand() % ('Z'-'A' + 1));
+       }
+    }
 }
 
 /**
@@ -168,7 +168,6 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
     bool encertada;
     int i, aux;
 
-    /* */
     printf("\nRENDEIXES?:");
     getchar();
     fgets(paraula, 100, stdin);
@@ -226,30 +225,31 @@ void pedir_jugada ( struct Sopa_t * sopa ) {
  * @param d (E/S) Direcció
  * @post Totes les paraules están marcades com encertades
  */
-void rendicio(struct Sopa_t * sopa, int *x, int *y, int *d)
-{
+void rendicio ( struct Sopa_t * sopa, int *x, int *y, int *d) {
     int aux;
-            sopa->rendicio = true;
-        for ( int i = 0; i < sopa->n_paraules; i++) {
-            if ( ! sopa->paraules[i].encertada ) {
-                *x = sopa->solucions[i].x;
-                *y = sopa->solucions[i].y;
-                *d = sopa->solucions[i].dir;
 
-                /* Bucle que marca la paraula */
-                aux = 0;
-                while ( abs(aux) < sopa->solucions[i].longitud ) {
-                    if ( abs(*d) == 1 )
-                        sopa->encertades[(*y)*sopa->dim + (*x)+aux] = true;
-                    else
-                        sopa->encertades[((*y)+aux)*sopa->dim + (*x)] = true;
-                    aux = ( *d < 0 ) ? aux-1 : aux+1;
-                }
+    sopa->rendicio = true;
+
+    for ( int i = 0; i < sopa->n_paraules; i++) {
+        if ( ! sopa->paraules[i].encertada ) {
+            *x = sopa->solucions[i].x;
+            *y = sopa->solucions[i].y;
+            *d = sopa->solucions[i].dir;
+
+            /* Bucle que marca la paraula */
+            aux = 0;
+            while ( abs(aux) < sopa->solucions[i].longitud ) {
+                if ( abs(*d) == 1 )
+                    sopa->encertades[(*y)*sopa->dim + (*x)+aux] = true;
+                else
+                    sopa->encertades[((*y)+aux)*sopa->dim + (*x)] = true;
+                aux = ( *d < 0 ) ? aux-1 : aux+1;
             }
-
-            /* Eliminar-la de la llista o marcar-la com encertada */
-            sopa->paraules[i].encertada = true;
         }
+
+        /* Eliminar-la de la llista o marcar-la com encertada */
+        sopa->paraules[i].encertada = true;
+    }
 }
 
 /**
