@@ -9,6 +9,13 @@ void missatge_benvinguda ( void ) {
         "##  Us donem la benvinguda al joc de la Sopa de Lletres !  ##\n"
         "## Autors: Pablo Munoz, Luis Manuel Ocampo, Adria Montagut ##\n"
         "#############################################################\n"
+	"## Com es juga?                                            ##\n"
+	"## Primer hauras de dir si et vols rendir amb 'RENDICIO'   ##\n"
+	"## Despres hauras d'escriure les coordenades i direcció    ##\n"
+	"## utilitzant 3 numeros en la forma 'X Y D'                ##\n"
+	"## X i Y son coordenades, D pot ser 1, -1, 2 o -2 on       ##\n"
+	"## 1 es horitzontal, 2 es vertical i el signe es invers    ##\n"
+	"#############################################################\n"
     );
 }
 
